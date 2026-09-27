@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace pitaneAPI.Model.DTO
+namespace pitaneAPI.Model
 {
     public class CreateHotelDto
     {

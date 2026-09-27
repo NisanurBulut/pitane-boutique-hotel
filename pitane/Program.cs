@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using pitaneAPI.Data;
 using Scalar.AspNetCore;
-
+using pitaneAPI.Model;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,7 +11,10 @@ builder.Services.AddDbContext<PitaneDbContext>(options =>
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
+builder.Services.AddAutoMapper(o =>
+{
+    o.CreateMap<CreateHotelDto, Hotel>();
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
