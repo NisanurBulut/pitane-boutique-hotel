@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddAutoMapper(o =>
 {
-    o.CreateMap<CreateHotelDto, Hotel>();
+    o.CreateMap<CreateHotelDto, Hotel>().ReverseMap();
 });
 var app = builder.Build();
 
