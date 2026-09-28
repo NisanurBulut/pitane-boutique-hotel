@@ -11,7 +11,7 @@ namespace pitaneAPI.Controllers
         {
 
         }
-        public async Task<ActionResult<ApiResponse<UserDto>>> Register(RegistrationDto registrationDto)
+        public async Task<ActionResult<ApiResponse<UserDto>>> Register(RegisterationRequestDto registrationDto)
         {
             return Ok(ApiResponse<UserDto>.Ok(null, "User registered successfully"));
         }

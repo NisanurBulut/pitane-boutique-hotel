@@ -2,7 +2,7 @@
 
 namespace pitaneAPI.Models
 {
-    public class RegistrationDto
+    public class RegisterationRequestDto
     {
         [Required]
         [EmailAddress]
