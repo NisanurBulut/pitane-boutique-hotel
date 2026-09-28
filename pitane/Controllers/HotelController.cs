@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using pitaneAPI.Data;
-using pitaneAPI.Model;
+using pitaneAPI.Models;
 using AutoMapper;
-using pitaneAPI.Model.DTO;
 
 namespace pitaneAPI.Controllers
 {

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using pitaneAPI.Data;
 using Scalar.AspNetCore;
-using pitaneAPI.Model;
+using pitaneAPI.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

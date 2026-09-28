@@ -1,13 +1,10 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations;
 
-using System.ComponentModel.DataAnnotations;
-
-namespace pitaneAPI.Model
+namespace pitaneAPI.Models
 {
-    public class Hotel
+    public class CreateHotelDto
     {
-        [Key]
-        public int Id { get; set; }
+        [MaxLength(100)]
         [Required]
         public required string Name { get; set; }
         public string Details { get; set; } = default!;
@@ -15,8 +12,5 @@ namespace pitaneAPI.Model
         public int Sqft { get; set; }
         public int Occupancy { get; set; }
         public string? ImageUrl { get; set; }
-        public DateTime CreatedTime { get; set; } = DateTime.Now;
-        public DateTime? UpdatedTime { get; set; }
-
     }
 }

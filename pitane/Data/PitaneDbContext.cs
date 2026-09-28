@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
-using pitaneAPI.Model;
+using pitaneAPI.Models;
 
 namespace pitaneAPI.Data
 {
@@ -10,5 +9,6 @@ namespace pitaneAPI.Data
         {
         }
         public DbSet<Hotel> Hotels { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
