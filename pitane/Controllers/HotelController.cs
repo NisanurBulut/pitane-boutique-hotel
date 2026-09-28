@@ -61,5 +61,20 @@ namespace pitaneAPI.Controllers
 
             return Ok(existingHotel);
         }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteHotel(int id)
+        {
+            var existingHotel = await _pitaneDbContext.Hotels.FirstOrDefaultAsync(h => h.Id == id);
+
+            if (existingHotel == null)
+            {
+                return NotFound();
+            }
+
+            _pitaneDbContext.Hotels.Remove(existingHotel);
+            await _pitaneDbContext.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }
