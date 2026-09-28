@@ -19,6 +19,7 @@ namespace pitaneAPI.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<HotelDto>>), StatusCodes.Status200OK)]
         public async Task<ActionResult<ApiResponse<IEnumerable<HotelDto>>>> GetHotels()
         {
             var hotels = await _pitaneDbContext.Hotels.ToListAsync();
@@ -28,6 +29,9 @@ namespace pitaneAPI.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse<HotelDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<ApiResponse<HotelDto>>> GetHotelById(int id)
         {
             if(id <= 0)
@@ -44,6 +48,9 @@ namespace pitaneAPI.Controllers
         }
 
         [HttpPost]
+
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<CreateHotelDto>), StatusCodes.Status201Created)]
         public async Task<ActionResult<ApiResponse<CreateHotelDto>>> CreateHotel(CreateHotelDto createHotelDto)
         {
             if (createHotelDto == null)
@@ -56,11 +63,16 @@ namespace pitaneAPI.Controllers
             _pitaneDbContext.Hotels.Add(hotel);
 
             await _pitaneDbContext.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetHotels), new { id = hotel.Id }, ApiResponse<CreateHotelDto>.Ok(_mapper.Map<CreateHotelDto>(hotel), "Hotel created successfully."));
+            var response = ApiResponse<CreateHotelDto>.CreatedAt("Hotel created successfully.", _mapper.Map<CreateHotelDto>(hotel));
+            return CreatedAtAction(nameof(GetHotels), new { id = hotel.Id }, response);
         }
 
         [HttpPut("{id}")]
+
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<HotelDto>>), StatusCodes.Status200OK)]
         public async Task<ActionResult<ApiResponse<UpdateHotelDto>>> UpdateHotel(int id, UpdateHotelDto updateHotelDto)
         {
             if (updateHotelDto == null || id != updateHotelDto.Id)
@@ -87,6 +99,8 @@ namespace pitaneAPI.Controllers
             return Ok(ApiResponse<UpdateHotelDto>.Ok(_mapper.Map<UpdateHotelDto>(existingHotel), "Hotel updated successfully."));
         }
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<HotelDto>>), StatusCodes.Status200OK)]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteHotel(int id)
         {
             var existingHotel = await _pitaneDbContext.Hotels.FirstOrDefaultAsync(h => h.Id == id);
