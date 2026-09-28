@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using pitaneAPI.Data;
 using pitaneAPI.Model;
 using AutoMapper;
+using pitaneAPI.Model.DTO;
 
 namespace pitaneAPI.Controllers
 {
@@ -18,13 +19,47 @@ namespace pitaneAPI.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Hotel>>> GetHotels()
+        public async Task<ActionResult<IEnumerable<HotelDto>>> GetHotels()
         {
             var hotels = await _pitaneDbContext.Hotels.ToListAsync();
-            return Ok(hotels);
+            return Ok(_mapper.Map<List<HotelDto>>(hotels));
         }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ApiResponse<HotelDto>>> GetHotelById(int id)
+        {
+            if(id <= 0)
+            {
+                return new ApiResponse<HotelDto>
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Invalid hotel ID.",
+                    Success = false,
+                    Errors = new { Id = "Hotel ID must be a positive integer." },
+                };
+            }
+
+            var hotel = await _pitaneDbContext.Hotels.FirstOrDefaultAsync(h => h.Id == id);
+            if (hotel == null)
+            {
+                return new ApiResponse<HotelDto>
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Message = "Hotel not found.",
+                    Success = false,
+                };
+            }
+            return new ApiResponse<HotelDto>
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "Hotel retrieved successfully.",
+                Success = true,
+                Data = _mapper.Map<HotelDto>(hotel)
+            };
+        }
+
         [HttpPost]
-        public async Task<ActionResult<Hotel>> CreateHotel(CreateHotelDto createHotelDto)
+        public async Task<ActionResult<CreateHotelDto>> CreateHotel(CreateHotelDto createHotelDto)
         {
             if (createHotelDto == null)
             {
@@ -37,11 +72,11 @@ namespace pitaneAPI.Controllers
 
             await _pitaneDbContext.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetHotels), new { id = hotel.Id }, hotel);
+            return CreatedAtAction(nameof(GetHotels), new { id = hotel.Id }, _mapper.Map<CreateHotelDto>(hotel));
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Hotel>> UpdateHotel(int id, UpdateHotelDto updateHotelDto)
+        public async Task<ActionResult<UpdateHotelDto>> UpdateHotel(int id, UpdateHotelDto updateHotelDto)
         {
             if (updateHotelDto == null || id != updateHotelDto.Id)
             {
@@ -54,12 +89,17 @@ namespace pitaneAPI.Controllers
             {
                 return NotFound();
             }
-
+            var duplicateHotel = await _pitaneDbContext.Hotels
+                .FirstOrDefaultAsync(h => h.Name.ToLower() == updateHotelDto.Name.ToLower() && h.Id != id);
+            if (duplicateHotel != null)
+            {
+                return Conflict("A hotel with the same name already exists.");
+            }
             _mapper.Map(updateHotelDto, existingHotel);
             existingHotel.UpdatedTime = DateTime.Now;
             await _pitaneDbContext.SaveChangesAsync();
 
-            return Ok(existingHotel);
+            return Ok(_mapper.Map<UpdateHotelDto>(existingHotel));
         }
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteHotel(int id)
