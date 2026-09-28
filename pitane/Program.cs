@@ -14,6 +14,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddAutoMapper(o =>
 {
     o.CreateMap<CreateHotelDto, Hotel>().ReverseMap();
+    o.CreateMap<UpdateHotelDto, Hotel>().ReverseMap();
 });
 var app = builder.Build();
 

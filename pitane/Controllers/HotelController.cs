@@ -39,5 +39,27 @@ namespace pitaneAPI.Controllers
 
             return CreatedAtAction(nameof(GetHotels), new { id = hotel.Id }, hotel);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Hotel>> UpdateHotel(int id, UpdateHotelDto updateHotelDto)
+        {
+            if (updateHotelDto == null || id != updateHotelDto.Id)
+            {
+                return BadRequest();
+            }
+
+            var existingHotel = await _pitaneDbContext.Hotels.FirstOrDefaultAsync(h => h.Id == id);
+
+            if (existingHotel == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(updateHotelDto, existingHotel);
+            existingHotel.UpdatedTime = DateTime.Now;
+            await _pitaneDbContext.SaveChangesAsync();
+
+            return Ok(existingHotel);
+        }
     }
 }
