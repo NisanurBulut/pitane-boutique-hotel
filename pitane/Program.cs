@@ -1,11 +1,13 @@
-using Microsoft.EntityFrameworkCore;
-using pitaneAPI.Data;
-using Scalar.AspNetCore;
-using pitaneAPI.Models;
-using pitaneAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
+using pitaneAPI.Data;
+using pitaneAPI.Profiles;
+using pitaneAPI.Services;
+using Scalar.AspNetCore;
+using System.Text;
+using AutoMapper;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -61,13 +63,10 @@ builder.Services.AddOpenApi(options =>
         return Task.CompletedTask;
     });
 });
-builder.Services.AddAutoMapper(o =>
+builder.Services.AddAutoMapper(cfg =>
 {
-    o.CreateMap<CreateHotelDto, Hotel>().ReverseMap();
-    o.CreateMap<UpdateHotelDto, Hotel>().ReverseMap();
-    o.CreateMap<HotelDto, Hotel>().ReverseMap();
-    o.CreateMap<UserDto, User>().ReverseMap();
-});
+}, typeof(MappingProfile).Assembly);
+
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 var app = builder.Build();

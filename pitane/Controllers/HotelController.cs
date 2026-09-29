@@ -50,12 +50,12 @@ namespace pitaneAPI.Controllers
         [HttpPost]
 
         [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiResponse<CreateHotelDto>), StatusCodes.Status201Created)]
-        public async Task<ActionResult<ApiResponse<CreateHotelDto>>> CreateHotel(CreateHotelDto createHotelDto)
+        [ProducesResponseType(typeof(ApiResponse<HotelCreateDto>), StatusCodes.Status201Created)]
+        public async Task<ActionResult<ApiResponse<HotelCreateDto>>> CreateHotel(HotelCreateDto createHotelDto)
         {
             if (createHotelDto == null)
             {
-                return BadRequest(ApiResponse<CreateHotelDto>.BadRequest("Invalid hotel data.", new { CreateHotelDto = "Hotel data is required." }));
+                return BadRequest(ApiResponse<HotelCreateDto>.BadRequest("Invalid hotel data.", new { CreateHotelDto = "Hotel data is required." }));
             }
 
             var hotel = _mapper.Map<Hotel>(createHotelDto);
@@ -63,7 +63,7 @@ namespace pitaneAPI.Controllers
             _pitaneDbContext.Hotels.Add(hotel);
 
             await _pitaneDbContext.SaveChangesAsync();
-            var response = ApiResponse<CreateHotelDto>.CreatedAt("Hotel created successfully.", _mapper.Map<CreateHotelDto>(hotel));
+            var response = ApiResponse<HotelCreateDto>.CreatedAt("Hotel created successfully.", _mapper.Map<HotelCreateDto>(hotel));
             return CreatedAtAction(nameof(GetHotels), new { id = hotel.Id }, response);
         }
 
@@ -73,30 +73,30 @@ namespace pitaneAPI.Controllers
         [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<HotelDto>>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<ApiResponse<UpdateHotelDto>>> UpdateHotel(int id, UpdateHotelDto updateHotelDto)
+        public async Task<ActionResult<ApiResponse<HotelUpdateDto>>> UpdateHotel(int id, HotelUpdateDto updateHotelDto)
         {
             if (updateHotelDto == null || id != updateHotelDto.Id)
             {
-                return BadRequest(ApiResponse<UpdateHotelDto>.BadRequest("Invalid hotel data.", new { UpdateHotelDto = "Invalid hotel data." }) );
+                return BadRequest(ApiResponse<HotelUpdateDto>.BadRequest("Invalid hotel data.", new { HotelUpdateDto = "Invalid hotel data." }) );
             }
 
             var existingHotel = await _pitaneDbContext.Hotels.FirstOrDefaultAsync(h => h.Id == id);
 
             if (existingHotel == null)
             {
-                return NotFound(ApiResponse<UpdateHotelDto>.NotFound("Hotel not found."));
+                return NotFound(ApiResponse<HotelUpdateDto>.NotFound("Hotel not found."));
             }
             var duplicateHotel = await _pitaneDbContext.Hotels
                 .FirstOrDefaultAsync(h => h.Name.ToLower() == updateHotelDto.Name.ToLower() && h.Id != id);
             if (duplicateHotel != null)
             {
-                return Conflict(ApiResponse<UpdateHotelDto>.Conflict("A hotel with the same name already exists."));
+                return Conflict(ApiResponse<HotelUpdateDto>.Conflict("A hotel with the same name already exists."));
             }
             _mapper.Map(updateHotelDto, existingHotel);
             existingHotel.UpdatedTime = DateTime.Now;
             await _pitaneDbContext.SaveChangesAsync();
 
-            return Ok(ApiResponse<UpdateHotelDto>.Ok(_mapper.Map<UpdateHotelDto>(existingHotel), "Hotel updated successfully."));
+            return Ok(ApiResponse<HotelUpdateDto>.Ok(_mapper.Map<HotelUpdateDto>(existingHotel), "Hotel updated successfully."));
         }
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
