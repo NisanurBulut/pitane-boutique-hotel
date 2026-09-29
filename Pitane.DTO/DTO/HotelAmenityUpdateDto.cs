@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace pitaneAPI.Models
+namespace Pitane.DTO
 {
-    public class HotelAmenityDto
+    public class HotelAmenityUpdateDto
     {
         [Key]
         public int Id { get; set; }
@@ -13,6 +13,5 @@ namespace pitaneAPI.Models
 
         [Required]
         public int HotelId { get; set; }
-        public string? HotelName { get; set; }
     }
 }

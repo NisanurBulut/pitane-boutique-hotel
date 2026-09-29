@@ -4,6 +4,7 @@ using pitaneAPI.Data;
 using pitaneAPI.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Pitane.DTO;
 
 namespace pitaneAPI.Controllers
 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using pitaneAPI.Models;
+using Pitane.DTO;
 using pitaneAPI.Services;
 
 namespace pitaneAPI.Controllers

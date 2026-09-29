@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Pitane.DTO;
 using pitaneAPI.Models;
 
 

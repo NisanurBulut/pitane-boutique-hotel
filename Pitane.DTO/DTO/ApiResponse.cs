@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace pitaneAPI.Models
+namespace Pitane.DTO
 {
     public class ApiResponse<TData>
     {

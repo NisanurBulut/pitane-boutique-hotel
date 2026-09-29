@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using pitaneAPI.Data;
 using pitaneAPI.Models;
 using AutoMapper;
+using Pitane.DTO;
 
 namespace pitaneAPI.Controllers
 {

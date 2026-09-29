@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="Pitane.DTO/Pitane.DTO.csproj" Id="70f83e21-67a0-4ec0-a771-23963deef9cb" />
   <Project Path="pitane/pitaneAPI.csproj" />
   <Project Path="PitaneWeb/PitaneWeb.csproj" Id="a7c79607-38ab-46d2-b7fb-930e38c4ded5" />
 </Solution>

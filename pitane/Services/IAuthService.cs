@@ -1,4 +1,6 @@
-﻿using pitaneAPI.Models;
+﻿
+using Pitane.DTO;
+
 namespace pitaneAPI.Services
 {
     public interface IAuthService

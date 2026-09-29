@@ -1,4 +1,4 @@
-﻿namespace pitaneAPI.Models
+﻿namespace Pitane.DTO
 {
     public class LoginResponseDto
     {

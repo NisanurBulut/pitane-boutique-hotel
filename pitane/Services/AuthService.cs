@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using System.Reflection.Metadata.Ecma335;
+using Pitane.DTO;
 namespace pitaneAPI.Services
 {
     public class AuthService : IAuthService

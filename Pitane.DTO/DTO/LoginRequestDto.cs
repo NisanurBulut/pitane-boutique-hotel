@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace pitaneAPI.Models
+namespace Pitane.DTO
 {
     public class LoginRequestDto
     {

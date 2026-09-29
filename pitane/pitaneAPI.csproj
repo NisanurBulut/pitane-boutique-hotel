@@ -18,4 +18,8 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.17.9" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Pitane.DTO\Pitane.DTO.csproj" />
+  </ItemGroup>
+
 </Project>
