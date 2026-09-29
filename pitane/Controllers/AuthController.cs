@@ -13,7 +13,11 @@ namespace pitaneAPI.Controllers
         {
             _authService = authService;
         }
-        public async Task<ActionResult<ApiResponse<UserDto>>> Register(RegisterationRequestDto registrationDto)
+        [HttpPost("register")]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status201Created)]
+        public async Task<ActionResult<ApiResponse<UserDto>>> Register([FromBody] RegisterationRequestDto registrationDto)
         {
             if(registrationDto == null)
             {
@@ -34,6 +38,26 @@ namespace pitaneAPI.Controllers
             var response = ApiResponse<UserDto>.CreatedAt("User registered successfully", user);
 
             return CreatedAtAction(nameof(Register), new { id = user.Id }, response);
+        }
+
+        [HttpPost("login")]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<LoginResponseDto>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<ApiResponse<LoginResponseDto>>> Login([FromBody] LoginRequestDto loginDto)
+        {
+            if (loginDto == null)
+            {
+                return BadRequest(ApiResponse<object>.BadRequest("Login data is required"));
+            }
+            
+            var loginResponse = await _authService.LoginAsync(loginDto);
+
+            if (loginResponse == null)
+            {
+                return BadRequest(ApiResponse<object>.BadRequest("Login failed"));
+            }
+            var response = ApiResponse<LoginResponseDto>.Ok(loginResponse, "Login successful");
+            return Ok(response);
         }
     }
 }

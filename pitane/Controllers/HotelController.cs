@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using pitaneAPI.Data;
 using pitaneAPI.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace pitaneAPI.Controllers
 {
     [ApiController]
     [Route("api/hotel")]
+    [Authorize]
     public class HotelController : ControllerBase
     {
         private readonly PitaneDbContext _pitaneDbContext;
