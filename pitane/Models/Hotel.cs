@@ -17,6 +17,7 @@ namespace pitaneAPI.Models
         public string? ImageUrl { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         public DateTime? UpdatedTime { get; set; }
+        public ICollection<HotelAmenity>? HotelAmenities { get; set; }
 
     }
 }

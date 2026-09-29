@@ -10,5 +10,6 @@ namespace pitaneAPI.Data
         }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<HotelAmenity> HotelAmenities { get; set; }
     }
 }

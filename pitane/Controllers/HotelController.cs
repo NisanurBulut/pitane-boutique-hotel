@@ -9,7 +9,6 @@ namespace pitaneAPI.Controllers
 {
     [ApiController]
     [Route("api/hotel")]
-    [Authorize]
     public class HotelController : ControllerBase
     {
         private readonly PitaneDbContext _pitaneDbContext;
