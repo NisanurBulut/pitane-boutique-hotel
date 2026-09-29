@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using pitaneAPI.Data;
 using Scalar.AspNetCore;
 using pitaneAPI.Models;
+using pitaneAPI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,6 +19,8 @@ builder.Services.AddAutoMapper(o =>
     o.CreateMap<HotelDto, Hotel>().ReverseMap();
     o.CreateMap<UserDto, User>().ReverseMap();
 });
+
+builder.Services.AddScoped<IAuthService, AuthService>();    
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
