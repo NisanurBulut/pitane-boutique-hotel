@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using pitaneAPI.Models;
-using pitaneAPI.Models.DTO;
 
 
 namespace pitaneAPI.Profiles
